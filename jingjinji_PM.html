@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+       <title>京津冀PM2.5</title>
+   </head>
+   <body>
+       <style type="text/css">
+        ul,li{list-style: none;margin:0;padding:0;float:left;}
+        html{height:100%}
+        body{height:100%;margin:0px;padding:0px;font-family:"微软雅黑";}
+        #container{height:100%;width:100%;}
+
+       </style>
+       <div id="container"></div>
+
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+       <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=H9kPS5pvy1yT4LYu7tPHTfb4GitbPxZP"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+       <script type="text/javascript">
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+option = null;
+
+var data = [
+    {name: '万寿西宫', value:47.5},
+    {name: '定陵', value:33.6363636364},
+    {name: '东四', value:65.2},
+    {name: '天坛', value:30.6},
+    {name: '农展馆', value:51.9090909091},
+    {name: '官园', value:51.1363636364},
+    {name: '海淀区万柳', value:52.0454545455},
+    {name: '顺义新城', value:62.1818181818},
+    {name: '怀柔镇', value:32.2},
+    {name: '昌平镇', value:45.7272727273},
+    {name: '奥体中心', value:54.5909090909},
+    {name: '古城', value:61.8571428571},
+    {name: '市监测中心', value:81.3},
+    {name: '南口路', value:48.1304347826},
+    {name: '勤俭路', value:59.2380952381},
+    {name: '南京路', value:84.2631578947},
+    {name: '大直沽八号路', value:54.0869565217},
+    {name: '前进路', value:67.125},
+    {name: '北辰科技园区', value:75.5652173913},
+    {name: '天山路', value:81.0},
+    {name: '跃进路', value:66.6956521739},
+    {name: '第四大街', value:62.2608695652},
+    {name: '永明路', value:67.4761904762},
+    {name: '航天路', value:65.7826086957},
+    {name: '汉北路', value:67.0},
+    {name: '团泊洼', value:65.1363636364},
+    {name: '职工医院', value:77.3043478261},
+    {name: '高新区', value:82.1304347826},
+    {name: '西北水源', value:80.652173913},
+    {name: '西南高教', value:98.5714285714},
+    {name: '世纪公园', value:97.7826086957},
+    {name: '人民会堂', value:78.0},
+    {name: '封龙山', value:53.0869565217},
+    {name: '供销社', value:71.0},
+    {name: '雷达站', value:74.6818181818},
+    {name: '物资局', value:63.6363636364},
+    {name: '陶瓷公司', value:72.9130434783},
+    {name: '十二中', value:80.5217391304},
+    {name: '小山', value:72.6086956522},
+    {name: '北戴河环保局', value:59.0869565217},
+    {name: '第一关', value:13.4782608696},
+    {name: '监测站', value:25.5652173913},
+    {name: '市政府', value:65.6086956522},
+    {name: '建设大厦', value:14.1304347826},
+    {name: '环保局', value:85.3043478261},
+    {name: '东污水处理厂', value:89.5217391304},
+    {name: '矿院', value:100.260869565},
+    {name: '丛台公园', value:99.6086956522},
+    {name: '游泳馆', value:24.9166666667},
+    {name: '华电二区', value:92.652173913},
+    {name: '接待中心', value:97.9565217391},
+    {name: '地表水厂', value:90.5652173913},
+    {name: '胶片厂', value:81.9545454545},
+    {name: '监测站', value:88.1739130435},
+    {name: '人民公园', value:30.5652173913},
+    {name: '探机厂', value:6.0},
+    {name: '五金库', value:15.5652173913},
+    {name: '世纪豪园', value:19.6086956522},
+    {name: '北泵房', value:26.0869565217},
+    {name: '铁路', value:42.4782608696},
+    {name: '中国银行', value:18.3043478261},
+    {name: '开发区', value:35.7826086957},
+    {name: '文化中心', value:34.4545454545},
+    {name: '离宫', value:32.8695652174},
+    {name: '药材公司', value:51.652173913},
+    {name: '开发区', value:52.0434782609},
+    {name: '环境监测监理中心', value:61.652173913},
+    {name: '北华航天学院', value:58.2608695652},
+    {name: '沧县城建局', value:57.1304347826},
+    {name: '电视转播站', value:53.7391304348},
+    {name: '市环保局', value:48.0869565217},
+    {name: '电机北厂', value:47.6956521739},
+    {name: '市监测站', value:63.347826087},
+    {name: '市环保局', value:53.8695652174},
+    {name: '达活泉', value:124.347826087},
+    {name: '邢师高专', value:99.5652173913},
+    {name: '路桥公司', value:95.652173913},
+    {name: '市环保局', value:119.173913043}
+];
+var geoCoordMap = {
+    '万寿西宫':[116.366,39.8673],
+    '定陵':[116.17,40.2865],
+    '东四':[116.434,39.9522],
+    '天坛':[116.434,39.8745],
+    '农展馆':[116.473,39.9716],
+    '官园':[116.361,39.9425],
+    '海淀区万柳':[116.315,39.9934],
+    '顺义新城':[116.72,40.1438],
+    '怀柔镇':[116.644,40.3937],
+    '昌平镇':[116.23,40.1952],
+    '奥体中心':[116.407,40.0031],
+    '古城':[116.225,39.9279],
+    '市监测中心':[117.151,39.097],
+    '南口路':[117.193,39.173],
+    '勤俭路':[117.145,39.1654],
+    '南京路':[117.184,39.1205],
+    '大直沽八号路':[117.237,39.1082],
+    '前进路':[117.202,39.0927],
+    '北辰科技园区':[117.1837,39.2133],
+    '天山路':[117.269,39.1337],
+    '跃进路':[117.307,39.0877],
+    '第四大街':[117.707,39.0343],
+    '永明路':[117.457,38.8394],
+    '航天路':[117.401,39.124],
+    '汉北路':[117.764,39.1587],
+    '团泊洼':[117.157,38.9194],
+    '职工医院':[114.4548,38.0513],
+    '高新区':[114.6046,38.0398],
+    '西北水源':[114.5019,38.1398],
+    '西南高教':[114.4586111,38.00583333],
+    '世纪公园':[114.5330556,38.01777778],
+    '人民会堂':[114.5214,38.0524],
+    '封龙山':[114.3541,37.9097],
+    '供销社':[118.1662,39.6308],
+    '雷达站':[118.144,39.643],
+    '物资局':[118.1853,39.6407],
+    '陶瓷公司':[118.2185,39.6679],
+    '十二中':[118.1838,39.65782],
+    '小山':[118.1997,39.6295],
+    '北戴河环保局':[119.5259,39.8283],
+    '第一关':[119.7624,40.0181],
+    '监测站':[119.6023,39.9567],
+    '市政府':[119.607,39.9358],
+    '建设大厦':[119.5369,39.9419],
+    '环保局':[114.5129,36.61763],
+    '东污水处理厂':[114.5426,36.6164],
+    '矿院':[114.5035,36.5776],
+    '丛台公园':[114.4965,36.61981],
+    '游泳馆':[115.493,38.8632],
+    '华电二区':[115.5223,38.8957],
+    '接待中心':[115.4713,38.9108],
+    '地表水厂':[115.4612,38.8416],
+    '胶片厂':[115.442,38.8756],
+    '监测站':[115.5214,38.8707],
+    '人民公园':[114.8985,40.8367],
+    '探机厂':[114.892,40.79481],
+    '五金库':[114.8814,40.8115],
+    '世纪豪园':[114.9032,40.7688],
+    '北泵房':[114.904,40.8725],
+    '铁路':[117.9664,40.9161],
+    '中国银行':[117.9525,40.9843],
+    '开发区':[117.963,40.9359],
+    '文化中心':[117.8184,40.9733],
+    '离宫':[117.9384,41.0112],
+    '药材公司':[116.6838,39.5178],
+    '开发区':[116.7729,39.5747],
+    '环境监测监理中心':[116.715,39.5571],
+    '北华航天学院':[116.7464,39.5343],
+    '沧县城建局':[116.8854,38.2991],
+    '电视转播站':[116.8584,38.3254],
+    '市环保局':[116.8709,38.3228],
+    '电机北厂':[115.6951,37.7575],
+    '市监测站':[115.6426,37.7379],
+    '市环保局':[115.6906,37.739],
+    '达活泉':[114.4821,37.0967],
+    '邢师高专':[114.5261,37.0533],
+    '路桥公司':[114.5331,37.0964],
+    '市环保局':[114.4854,37.062]
+};
+
+var convertData = function (data) {
+    var res = [];
+    for (var i = 0; i < data.length; i++) {
+        var geoCoord = geoCoordMap[data[i].name];
+        if (geoCoord) {
+            res.push({
+                name: data[i].name,
+                value: geoCoord.concat(data[i].value)
+            });
+        }
+    }
+    return res;
+};
+
+
+
+option = {
+    title: {
+        text: '京津冀城市空气质量 - 百度地图',
+        subtext: 'data from beijingair.sinaapp.com',
+        sublink: 'http://beijingair.sinaapp.com/',
+        left: 'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: '{b}: {c}'
+    },
+    toolbox: {
+    show : true,
+    feature : {
+        mark : {show: true},
+        dataView : {show: true, readOnly: false},
+        magicType: {show: true, type: ['line', 'bar']},
+        restore : {show: true},
+        saveAsImage : {show: true}
+        }
+    },
+    bmap: {
+        center: [116.418261, 39.921984],
+        zoom: 7,
+        roam: true,
+        mapStyle: {
+            styleJson: [{
+                'featureType': 'water',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'land',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#f3f3f3'
+                }
+            }, {
+                'featureType': 'railway',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'highway',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#fdfdfd'
+                }
+            }, {
+                'featureType': 'highway',
+                'elementType': 'labels',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'arterial',
+                'elementType': 'geometry',
+                'stylers': {
+                    'color': '#fefefe'
+                }
+            }, {
+                'featureType': 'arterial',
+                'elementType': 'geometry.fill',
+                'stylers': {
+                    'color': '#fefefe'
+                }
+            }, {
+                'featureType': 'poi',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'green',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'subway',
+                'elementType': 'all',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'manmade',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'local',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'arterial',
+                'elementType': 'labels',
+                'stylers': {
+                    'visibility': 'off'
+                }
+            }, {
+                'featureType': 'boundary',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#4e4e4e'
+                }
+            }, {
+                'featureType': 'building',
+                'elementType': 'all',
+                'stylers': {
+                    'color': '#d1d1d1'
+                }
+            }, {
+                'featureType': 'label',
+                'elementType': 'labels.text.fill',
+                'stylers': {
+                    'color': '#999999'
+                }
+            }]
+        }
+    },
+    series : [
+        {
+            name: 'pm2.5',
+            type: 'scatter',
+            coordinateSystem: 'bmap',
+            data: convertData(data),
+            symbolSize: function (val) {
+                return val[2] / 10;
+            },
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: false
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: 'purple'
+                }
+            }
+        },
+        {
+            name: 'Top 3',
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            data: convertData(data.sort(function (a, b) {
+                return b.value - a.value;
+            }).slice(0, 3)),
+            symbolSize: function (val) {
+                return val[2] / 10;
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+                normal: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                }
+            },
+            itemStyle: {
+                normal: {
+                    color: 'purple',
+                    shadowBlur: 10,
+                    shadowColor: '#333'
+                }
+            },
+            zlevel: 1
+        },
+
+
+    ]
+};;
+
+
+
+if (option && typeof option === "object") {
+    myChart.setOption(option, true);
+}
+       </script>
+   </body>
+</html>
